@@ -1,6 +1,6 @@
 {
   "name": "castborg",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "AST searcher and modifier",
   "main": "gulpfile.js",
   "dependencies": {
