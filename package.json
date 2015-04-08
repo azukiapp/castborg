@@ -1,0 +1,30 @@
+{
+  "name": "castborg",
+  "version": "0.0.1",
+  "description": "AST searcher and modifier",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "babel-runtime": "^5.0.10",
+    "bluebird": "^2.9.24",
+    "fs-extra": "^0.18.0",
+    "glob": "^5.0.3",
+    "recast": "^0.10.11",
+    "source-map-support": "^0.2.10"
+  },
+  "devDependencies": {
+    "azk-dev": "^0.0.5"
+  },
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/azukiapp/castborg.git"
+  },
+  "author": "Julio M Saito (saitodisse@gmail.com)",
+  "license": "Apache License",
+  "bugs": {
+    "url": "https://github.com/azukiapp/castborg/issues"
+  },
+  "homepage": "https://github.com/azukiapp/castborg"
+}
