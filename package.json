@@ -15,7 +15,8 @@
     "azk-dev": "^0.0.5"
   },
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test",
+    "deploy": "./bin/npm-deploy"
   },
   "repository": {
     "type": "git",
