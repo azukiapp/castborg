@@ -2,7 +2,7 @@
   "name": "castborg",
   "version": "0.0.7",
   "description": "AST searcher and modifier",
-  "main": "gulpfile.js",
+  "main": "index.js",
   "dependencies": {
     "babel-runtime": "^5.0.10",
     "bluebird": "^2.9.24",
