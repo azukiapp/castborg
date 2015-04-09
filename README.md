@@ -34,4 +34,3 @@ AstSearcher has only static method that parse an AST and return a path
 
 AstModifier has only static method that can modify an AST
 It will then return a new copy of the existing code / AST / filepath.
----------------
