@@ -1,0 +1,10 @@
+/.editorconfig
+/.jscsrc
+/.jshintrc
+.gitignore
+.npmignore
+.travis.yml
+gulpfile.js
+lib/spec/
+node_modules/
+spec/
