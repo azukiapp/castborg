@@ -4,7 +4,7 @@
   "description": "AST searcher and modifier",
   "main": "index.js",
   "dependencies": {
-    "babel-runtime": "^5.0.10",
+    "babel-runtime": "^5.0.12",
     "bluebird": "^2.9.24",
     "fs-extra": "^0.18.0",
     "glob": "^5.0.3",
