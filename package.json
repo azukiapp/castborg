@@ -12,7 +12,7 @@
     "source-map-support": "^0.2.10"
   },
   "devDependencies": {
-    "azk-dev": "^0.0.5"
+    "azk-dev": "0.0.5"
   },
   "scripts": {
     "test": "gulp test",

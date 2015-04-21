@@ -3,10 +3,10 @@ var fileUtils = require('./file-utils');
 var bb = require('bluebird');
 
 var instructions = [
-  'You should create SourceCodeFile instance with code or filename:',
-  ' code: `new SourceCodeFile( { code: \'var a = 1;\' } )`',
-  ' file: `new SourceCodeFile( { file: \'./full/path/to/file.js\' } )`',
-  ' ast:  `new SourceCodeFile( { ast: ast_object } )`',
+  'SourceCode creation Error. You should create SourceCode instance with a code or a filename:',
+  ' code: `new SourceCode( { code: \'var a = 1;\' } )`',
+  ' file: `new SourceCode( { file: \'./full/path/to/file.js\' } )`',
+  ' ast:  `new SourceCode( { ast: ast_object } )`',
 ].join('\n');
 
 /**
@@ -43,12 +43,46 @@ class SourceCode {
     if (code) {
       this.__file_path = file_path;
       this.__code = code;
-      this.__ast = recast.parse(code);
+      try {
+        this.__ast = recast.parse(code);
+      } catch (err) {
+        this.__print_parse_error(code, err);
+        throw err;
+      }
     } else if (ast) {
       this.__file_path = file_path;
       this.__ast = ast;
       this.__code = recast.print(ast).code;
     }
+  }
+
+  __print_parse_error(code, err) {
+    /**/console.log('\n>>---------\n err:\n', require('util').inspect(err, { showHidden: false, depth: null, colors: true }), '\n>>---------\n');/*-debug-*/
+    // get the source code line of the error
+    var errorLine = '';
+    if (err.lineNumber) {
+      errorLine = code.split('\n')[err.lineNumber - 1];
+    }
+
+    // show column indicator
+    var errorColumnIndicator = '';
+    if (err.column) {
+      for (var i = 0; i < err.column - 1; i++) {
+        errorColumnIndicator += '-';
+      }
+      errorColumnIndicator += '^';
+    }
+
+    // error complement
+    var error_message_complement = [
+      '',
+      '        ' + errorLine,
+      '        ' + errorColumnIndicator,
+      '        ' + err.message
+    ].join('\n');
+
+    // throw esprima error
+    err.message = error_message_complement;
   }
 
   // async call.

@@ -65,6 +65,36 @@ describe('SourceCode:', function() {
     ].join('\n'));
   });
 
+  it('should throw an errors when the origin string is wrong', function() {
+    var wrong_source = [
+      'var sum = function(a, b) {',
+      '  return path.resolvea + b;',
+      '}',
+      'var path = require(\'path\';); // this is a comment', // do not fix this
+      'var sum2 = function(a, b) {',
+      '  return path.resolvea + b;',
+      '}',
+    ].join('\n');
+    new SourceCode({ code: wrong_source });
+
+    // // load from AST
+    // var sourceCode2 = new SourceCode({ ast: sourceCode1.ast });
+    //
+    // var bodyArray = sourceCode2.ast.program.body;
+    // h.expect(bodyArray).to.be.an.array;
+    // h.expect(bodyArray[0].type).to.be.equal('VariableDeclaration');
+    // h.expect(bodyArray[1].type).to.be.equal('VariableDeclaration');
+    //
+    // // check code
+    // h.expect(sourceCode2.code).to.equal([
+    //   'var path = require(\'path\');',
+    //   '',
+    //   'var sum = function(a, b) {',
+    //   '  return path.resolvea + b;',
+    //   '}',
+    // ].join('\n'));
+  });
+
   it('should load a javascript FILE (promises)', function() {
     var sourceCodePromise = new SourceCode({ file: __filename });
     sourceCodePromise.then(function (sourceCodeInstance) {
