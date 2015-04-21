@@ -14,7 +14,7 @@ describe('SourceCode:', function() {
       'var path = require(\'path\');',
       '',
       'var sum = function(a, b) {',
-      '  return path.resolvea + b;',
+      '  return a + b;',
       '}',
     ].join('\n');
     sourceCode = new SourceCode({ code: sample_code });
@@ -31,7 +31,7 @@ describe('SourceCode:', function() {
       'var path = require(\'path\');',
       '',
       'var sum = function(a, b) {',
-      '  return path.resolvea + b;',
+      '  return a + b;',
       '}',
     ].join('\n'));
   });
@@ -42,7 +42,7 @@ describe('SourceCode:', function() {
       'var path = require(\'path\');',
       '',
       'var sum = function(a, b) {',
-      '  return path.resolvea + b;',
+      '  return a + b;',
       '}',
     ].join('\n');
     var sourceCode1 = new SourceCode({ code: sample_code_string_1 });
@@ -60,7 +60,7 @@ describe('SourceCode:', function() {
       'var path = require(\'path\');',
       '',
       'var sum = function(a, b) {',
-      '  return path.resolvea + b;',
+      '  return a + b;',
       '}',
     ].join('\n'));
   });
@@ -68,14 +68,16 @@ describe('SourceCode:', function() {
   it('should throw an errors when the origin string is wrong', function() {
     var wrong_source = [
       'var sum = function(a, b) {',
-      '  return path.resolvea + b;',
+      '  return a + b;',
       '}',
       'var path = require(\'path\';); // this is a comment', // do not fix this
       'var sum2 = function(a, b) {',
-      '  return path.resolvea + b;',
+      '  return a + b;',
       '}',
     ].join('\n');
-    new SourceCode({ code: wrong_source });
+
+    // TODO: read error to test properly
+    h.expect(() => new SourceCode({ code: wrong_source })).to.throw;
 
     // // load from AST
     // var sourceCode2 = new SourceCode({ ast: sourceCode1.ast });
@@ -90,7 +92,7 @@ describe('SourceCode:', function() {
     //   'var path = require(\'path\');',
     //   '',
     //   'var sum = function(a, b) {',
-    //   '  return path.resolvea + b;',
+    //   '  return a + b;',
     //   '}',
     // ].join('\n'));
   });

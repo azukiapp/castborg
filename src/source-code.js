@@ -57,7 +57,6 @@ class SourceCode {
   }
 
   __print_parse_error(code, err) {
-    /**/console.log('\n>>---------\n err:\n', require('util').inspect(err, { showHidden: false, depth: null, colors: true }), '\n>>---------\n');/*-debug-*/
     // get the source code line of the error
     var errorLine = '';
     if (err.lineNumber) {
