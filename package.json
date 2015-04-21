@@ -1,6 +1,6 @@
 {
   "name": "castborg",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "AST searcher and modifier",
   "main": "index.js",
   "dependencies": {
