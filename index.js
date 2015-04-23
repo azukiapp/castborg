@@ -4,4 +4,5 @@ module.exports = {
   get SourceCode () { return require('./lib/src/source-code'); },
   get AstSearcher() { return require('./lib/src/ast-helpers/ast-searcher'); },
   get AstModifier() { return require('./lib/src/ast-helpers/ast-modifier'); },
+  get printCode()   { return require('./lib/src/code-frame').default; },
 };
