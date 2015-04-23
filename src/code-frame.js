@@ -91,7 +91,7 @@ var codeFrame = function (lines, lineNumber, colNumber) {
   }).join("\n");
 };
 
-export function printCodeHightlighted(name, obj) {
+export function hightLightCode(name, obj) {
   if (!name) {
     obj = name;
     name = 'code';
@@ -101,22 +101,18 @@ export function printCodeHightlighted(name, obj) {
   var code = '';
   if (typeof obj === 'string') {
     code = obj;
-  }
-
-  // from source-code
-  if (obj instanceof SourceCode) {
+  } else if (obj instanceof SourceCode) {
+    // from source-code
     code = obj.code;
-  }
-
-  // from AST (we hope)
-  if (typeof obj === 'object') {
+  } else if (typeof obj === 'object') {
+    // from AST (we hope)
     var source_code = new SourceCode({ ast: obj });
     code = source_code.code;
   }
 
-  console.log(chalk.gray('\n-- [' + chalk.bold(name) + '] --- '));
-  console.log(codeFrame(code));
-  console.log(chalk.gray('-- [/' + chalk.bold(name) + '] --\n'));
+  return chalk.gray('\n-- [' + chalk.bold(name) + '] --- ') + '\n' +
+    codeFrame(code) + '\n' + 
+    chalk.gray('-- [/' + chalk.bold(name) + '] --\n');
 }
 
-export default printCodeHightlighted;
+export default hightLightCode;
