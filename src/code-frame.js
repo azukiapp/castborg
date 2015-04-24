@@ -111,7 +111,7 @@ export function hightLightCode(name, obj) {
   }
 
   return chalk.gray('\n-- [' + chalk.bold(name) + '] --- ') + '\n' +
-    codeFrame(code) + '\n' + 
+    codeFrame(code) + '\n' +
     chalk.gray('-- [/' + chalk.bold(name) + '] --\n');
 }
 

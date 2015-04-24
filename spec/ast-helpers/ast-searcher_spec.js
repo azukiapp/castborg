@@ -254,7 +254,7 @@ describe('AstSearcher (static class):', function() {
     it('should get not get return expression if does not exist', function() {
       var sourceCode = new SourceCode({ code: [
         'function sum(a, b) {',
-        '  var result = a + b;',
+        '  var THIS_IS_NOT_A_RETURN = a + b;',
         '}',
       ].join('\n') });
 
@@ -276,6 +276,28 @@ describe('AstSearcher (static class):', function() {
       var return_statements_path = AstSearcher.getReturnStatementFromFunctionPath(functions_list_path[0]);
 
       h.expect(return_statements_path.length).to.deep.equal(2);
+    });
+
+    it('should get only return in outer function', function() {
+      var sourceCode = new SourceCode({ code: [
+        'function outer() {',
+        '  function inner() {',
+        '    return 3;',
+        '  }',
+        '  return 2;',
+        '}',
+      ].join('\n') });
+
+      var functions_list_path = AstSearcher.getAllFunctionsPaths(sourceCode.ast);
+
+      // inner function
+      var return_statements_path = AstSearcher.getReturnStatementFromFunctionPath(functions_list_path[1]);
+      h.expect(return_statements_path.length).to.deep.equal(1);
+
+      // outer function
+      return_statements_path = AstSearcher.getReturnStatementFromFunctionPath(functions_list_path[0]);
+      h.expect(return_statements_path.length).to.deep.equal(1);
+
     });
 
   });

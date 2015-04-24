@@ -152,7 +152,17 @@ module.exports = class AstSearcher {
   static getReturnStatementFromFunctionPath(func_ast) {
     var paths_to_return = [];
 
-    ast_types.visit(func_ast, {
+    var body = func_ast.value.body.body;
+
+    ast_types.visit(body, {
+
+      visitFunction: function(/* path */) {
+          // ThisExpression nodes in nested scopes don't count as `this`
+          // references for the original function node, so we can safely
+          // avoid traversing this subtree.
+          return false;
+      },
+
       visitReturnStatement: function(path) {
         paths_to_return.push(path);
         this.traverse(path);
