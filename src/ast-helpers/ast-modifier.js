@@ -1,5 +1,5 @@
 var recast = require('recast');
-
+var AstSearcher = require('./ast-searcher');
 /**
  * AstModifier (static class)
  * use directly: AstModifier.addDebugRequireOnTop(souceCode.ast);
@@ -37,9 +37,17 @@ class AstModifier {
    */
   static replaceFunctionReturnWithSnippet(function_node, snippet_ast) {
 
+    var func_body = AstSearcher.getFunctionBody(function_node);
+
     var existsReturnStatement = false;
     var types = recast.types;
-    types.visit(function_node, {
+    types.visit(func_body, {
+
+      visitFunction: function(/* path */) {
+        // avoid traversing this subtree.
+        return false;
+      },
+
       visitReturnStatement: function(path) {
         existsReturnStatement = true;
         // get block array from return statement

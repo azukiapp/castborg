@@ -125,8 +125,6 @@ module.exports = class AstSearcher {
     */
     if (func_path.parentPath.value.type === 'MethodDefinition') {
       var class_name = func_path.parentPath.parentPath.parentPath.parentPath.value.id.name;
-      // /**/console.log('\n>>---------\n func_path.parentPath.value:\n', func_path.parentPath.value, '\n>>---------\n');/*-debug-*/
-      // /**/console.log('\n>>---------\n func_path.parentPath:\n', func_path.parentPath, '\n>>---------\n');/*-debug-*/
       if (func_path.parentPath.value.key.name === 'constructor' ) {
         // constructor
         return 'new ' + class_name + '()';
@@ -146,21 +144,31 @@ module.exports = class AstSearcher {
   }
 
   /**
+   * Search function's body
+   * @return {ast path}   function's return expression AST
+   */
+  static getFunctionBody(func_ast) {
+    if (func_ast.value) {
+      return func_ast.value.body.body;
+    } else {
+      return func_ast.body.body;
+    }
+  }
+
+  /**
    * Search function's return expression
    * @return {ast path}   function's return expression AST
    */
   static getReturnStatementFromFunctionPath(func_ast) {
     var paths_to_return = [];
 
-    var body = func_ast.value.body.body;
+    var func_body = AstSearcher.getFunctionBody(func_ast);
 
-    ast_types.visit(body, {
+    ast_types.visit(func_body, {
 
       visitFunction: function(/* path */) {
-          // ThisExpression nodes in nested scopes don't count as `this`
-          // references for the original function node, so we can safely
-          // avoid traversing this subtree.
-          return false;
+        // avoid traversing this subtree.
+        return false;
       },
 
       visitReturnStatement: function(path) {
