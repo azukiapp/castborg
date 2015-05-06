@@ -49,7 +49,7 @@ describe('AstModifier:', function() {
   });
   //---------------------------------------------------------------
 
-  describe('Insert return statement:', function () {
+  describe('Insert return statement - replaceFunctionReturnWithSnippet:', function () {
 
     it('should insert snippet on return statement', function() {
       // original code
@@ -75,6 +75,43 @@ describe('AstModifier:', function() {
       h.expect(result_source_code.code).to.eql([
         "function sum(a, b) {",
         "  console.log('HERE');",
+        "}",
+      ].join('\n'));
+
+    });
+
+    it('should replace two returns', function() {
+      // original code
+      var sourceCode = new SourceCode({ code: [
+        "function getMax(a, b) {",
+        "  if (a >= b) {",
+        "    return a;",
+        "  } else {",
+        "    return b;",
+        "  }",
+        "}",
+      ].join('\n') });
+
+      // get function
+      var functions_list_path = AstSearcher.getAllFunctionsPaths(sourceCode.ast);
+      var first_function_ast = functions_list_path[0].node;
+
+      // get snippet AST
+      var console_snippet = new SourceCode({ code: "console.log('HERE');" });
+      var snippet_ast = console_snippet.ast.program.body;
+
+      // ! insert Snippet On Return Function
+      AstModifier.replaceFunctionReturnWithSnippet(first_function_ast, snippet_ast);
+
+      // check result
+      var result_source_code = new SourceCode({ ast: first_function_ast });
+      h.expect(result_source_code.code).to.eql([
+        "function getMax(a, b) {",
+        "  if (a >= b) {",
+        "    console.log('HERE');",
+        "  } else {",
+        "    console.log('HERE');",
+        "  }",
         "}",
       ].join('\n'));
 
