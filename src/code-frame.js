@@ -6,6 +6,9 @@ import lineNumbers from "line-numbers";
 import repeating   from "repeating";
 import SourceCode  from './source-code';
 
+var debug = require('debug')('castborg:CodeFrame');
+
+
 var defs = {
   string:     chalk.red,
   punctuator: chalk.bold,
@@ -45,6 +48,9 @@ function getTokenType(match) {
 }
 
 function highlight(text) {
+  if (!text) {
+    return;
+  }
   return text.replace(jsTokens, function (...args) {
     var type = getTokenType(args);
     var colorize = defs[type];
@@ -61,6 +67,10 @@ var codeFrame = function (lines, lineNumber, colNumber) {
 
   if (chalk.supportsColor) {
     lines = highlight(lines);
+  }
+
+  if (!lines) {
+    return;
   }
 
   lines = lines.split(NEWLINE);
@@ -106,12 +116,39 @@ export function hightLightCode(name, obj) {
     code = obj.code;
   } else if (typeof obj === 'object') {
     // from AST (we hope)
-    var source_code = new SourceCode({ ast: obj });
-    code = source_code.code;
+    try {
+      var source_code = new SourceCode({ ast: obj });
+      code = source_code.code;
+    } catch (e) {
+      debug('\nError hightLightCode - name: "' + name + '"');
+      debug(e.message);
+      debug(hightLightAST('AST ERROR: ' + name, obj, 2));
+      debug('');
+      return 'Error hightLightCode ^^^';
+    }
   }
 
   return chalk.gray('\n-- [' + chalk.bold(name) + '] --- ') + '\n' +
     codeFrame(code) + '\n' +
+    chalk.gray('-- [/' + chalk.bold(name) + '] --\n');
+}
+
+export function hightLightAST(name, ast, depth) {
+  var util = require('util');
+
+  // no name, so its an ast. call hightLightAST(ast, depth);
+  if (!depth) {
+    depth = ast;
+    ast = name;
+    name = 'AST';
+  }
+
+  return chalk.gray('\n-- [' + chalk.bold(name) + '] --- ') + '\n' +
+    util.inspect(ast, {
+      showHidden: false,
+      depth: depth || 1,
+      colors: true
+    }) + '\n' +
     chalk.gray('-- [/' + chalk.bold(name) + '] --\n');
 }
 
